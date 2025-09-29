@@ -1,0 +1,34 @@
+[
+{
+    "model": "catalog.category",
+    "pk": 1,
+    "fields": {
+        "name": "Смартфон",
+        "description": "универсальные гаджеты"
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 2,
+    "fields": {
+        "name": "Телевизор",
+        "description": "Для просмотра и сериалов"
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 3,
+    "fields": {
+        "name": "Игровая приставка",
+        "description": "Для развлечения"
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 4,
+    "fields": {
+        "name": "Бытовая техника",
+        "description": "Для дома"
+    }
+}
+]
