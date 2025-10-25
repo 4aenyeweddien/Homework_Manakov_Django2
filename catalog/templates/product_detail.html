@@ -1,0 +1,46 @@
+{% extends 'home.html' %}
+{% load my_tags %}
+{% block content %}
+<div class="album py-5 bg-body-tertiary">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            <div class="col">
+                <div class="card shadow-sm">
+                    <img src="{{ product.image | media_filter  }}">
+                    <div class="card-header text-center">
+                        <h4 class="my-0 font-weight-normal">{{ product.name }}</h4>
+                    </div>
+                    <div class="card-body d-flex flex-column text-center">
+                        <h1 class="card-title pricing-card-title">{{ product.price }} руб.</h1>
+                        <div class="flex-grow-1">
+                            <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                                <li>
+                                    Описание:
+                                    {% if product.description|length > 100 %}
+                                    {{ product.description|slice:":100" }}...
+                                    {% else %}
+                                    {{ product.description }}
+                                    {% endif %}
+                                </li>
+                                <li>
+                                    Категория:
+                                    {{ product.category }}
+                                </li>
+                                <li>
+                                    Дата создания:
+                                    {{ product.created_at|date:"d M Y"  }}
+                                </li>
+                                <li>
+                                    Дата изменения:
+                                    {{ product.updated_at|date:"d M Y"  }}
+                                </li>
+                            </ul>
+                        </div>
+                        <button type="button" class="btn btn-lg btn-block btn-outline-primary mt-auto">Купить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
