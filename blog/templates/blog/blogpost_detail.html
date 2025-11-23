@@ -1,0 +1,25 @@
+{% extends 'catalog/home.html' %}
+
+{% block title %}{{ object.title }}{% endblock %}
+
+{% block content %}
+<h1>{{ object.title }}</h1>
+
+{% if object.preview %}
+    <img src="{{ object.preview.url }}" alt="{{ object.title }}" width="300">
+{% endif %}
+
+<p>{{ object.content|linebreaks }}</p>
+
+<div>
+    <p><strong>Дата создания:</strong> {{ object.created_at|date:"d.m.Y H:i" }}</p>
+    <p><strong>Просмотров:</strong> {{ object.views_count }}</p>
+    <p><strong>Опубликовано:</strong> {{ object.is_published|yesno:"Да,Нет" }}</p>
+</div>
+
+<div>
+    <a href="{% url 'blog:blogpost_list' %}">Назад к списку</a> |
+    <a href="{% url 'blog:blogpost_update' object.pk %}">Редактировать</a> |
+    <a href="{% url 'blog:blogpost_delete' object.pk %}">Удалить</a>
+</div>
+{% endblock %}
