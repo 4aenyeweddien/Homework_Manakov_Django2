@@ -3,6 +3,9 @@
 {% block content %}
 <div class="album py-5 bg-body-tertiary">
     <div class="container">
+        <div class="mb-4 text-end">
+            <a href="{% url 'catalog:product_create' %}" class="btn btn-success">+ Добавить продукт</a>
+        </div>
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
             {% for product in products %}
             <div class="col">
@@ -19,8 +22,18 @@
                         </p>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
-                                <a class="btn btn-primary" href="{% url 'catalog:product_detail' product.pk %}"
-                                   role="button">Посмотреть</a>
+                                <a class="btn btn-sm btn-outline-primary"
+                                   href="{% url 'catalog:product_detail' product.pk %}">
+                                    Посмотреть
+                                </a>
+                                <a class="btn btn-sm btn-outline-secondary"
+                                   href="{% url 'catalog:product_update' product.pk %}">
+                                    Редактировать
+                                </a>
+                                <a class="btn btn-sm btn-outline-danger"
+                                   href="{% url 'catalog:product_delete' product.pk %}">
+                                    Удалить
+                                </a>
                             </div>
                             <small class="text-body-secondary">Дата изменения:{{ product.updated_at|date:"d M Y"}}</small>
                         </div>
