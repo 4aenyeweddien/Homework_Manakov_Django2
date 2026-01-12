@@ -72,5 +72,5 @@ class ProductForm(StyleFormMixin, forms.ModelForm):
         price = self.cleaned_data["price"]
 
         if price is not None and price < 0:
-            raise ValidationError(f"Цена продукта не может быть отрицательной")
+            raise ValidationError("Цена продукта не может быть отрицательной")
         return price
