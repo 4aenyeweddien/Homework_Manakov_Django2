@@ -18,6 +18,8 @@ class StyleFormMixin:
 
 
 class ProductForm(StyleFormMixin, forms.ModelForm):
+    """Форма для создания и редактирования продуктов."""
+
     class Meta:
         model = Product
         fields = ["name", "description", "image", "category", "price"]

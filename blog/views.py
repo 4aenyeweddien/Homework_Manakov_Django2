@@ -11,6 +11,8 @@ from .models import BlogPost
 
 
 class BlogPostListView(ListView):
+    """Список опубликованных записей блога."""
+
     model = BlogPost
     template_name = "blog/blogpost_list.html"
 
@@ -19,6 +21,8 @@ class BlogPostListView(ListView):
 
 
 class BlogPostDetailView(DetailView):
+    """Детальная страница записи блога."""
+
     model = BlogPost
     template_name = "blog/blogpost_detail.html"
 
@@ -30,6 +34,8 @@ class BlogPostDetailView(DetailView):
 
 
 class BlogPostCreateView(CreateView):
+    """Создание новой записи блога."""
+
     model = BlogPost
     template_name = "blog/blogpost_form.html"
     fields = ["title", "content", "preview", "is_published"]
@@ -37,6 +43,8 @@ class BlogPostCreateView(CreateView):
 
 
 class BlogPostUpdateView(UpdateView):
+    """Редактирование записи блога."""
+
     model = BlogPost
     template_name = "blog/blogpost_form.html"
     fields = ["title", "content", "preview", "is_published"]
@@ -46,6 +54,8 @@ class BlogPostUpdateView(UpdateView):
 
 
 class BlogPostDeleteView(DeleteView):
+    """Удаление записи блога."""
+
     model = BlogPost
     template_name = "blog/blogpost_confirm_delete.html"
     success_url = reverse_lazy("blog:blogpost_list")
