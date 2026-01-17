@@ -1,10 +1,18 @@
-from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from catalog.models import Product
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    DetailView,
+    ListView,
+    UpdateView,
+)
+
 from catalog.forms import ProductForm
+from catalog.models import Product
 
 
 class ContactsView(View):
@@ -24,31 +32,40 @@ class ProductsListView(ListView):
     """View для списка продуктов"""
 
     model = Product
-    template_name = 'catalog/product_list.html'
-    context_object_name = 'products'
+    template_name = "catalog/product_list.html"
+    context_object_name = "products"
 
 
-class ProductDetailView(DetailView):
+class ProductDetailView(LoginRequiredMixin, DetailView):
     """View для детальной страницы продукта"""
 
     model = Product
-    template_name = 'catalog/product_detail.html'
-    context_object_name = 'products'
+    template_name = "catalog/product_detail.html"
+    context_object_name = "products"
 
-class ProductCreateView(CreateView):
+
+class ProductCreateView(LoginRequiredMixin, CreateView):
+    """View для создания продукта"""
+
     model = Product
     form_class = ProductForm
-    template_name = 'catalog/product_form.html'
-    success_url = reverse_lazy('catalog:product_list')
+    template_name = "catalog/product_form.html"
+    success_url = reverse_lazy("catalog:product_list")
 
-class ProductUpdateView(UpdateView):
+
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
+    """View для редактирования продукта"""
+
     model = Product
     form_class = ProductForm
-    template_name = 'catalog/product_form.html'
-    success_url = reverse_lazy('catalog:product_list')
+    template_name = "catalog/product_form.html"
+    success_url = reverse_lazy("catalog:product_list")
 
-class ProductDeleteView(DeleteView):
+
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
+    """View для удаления продукта"""
+
     model = Product
-    template_name = 'catalog/product_confirm_delete.html'
-    success_url = reverse_lazy('catalog:product_list')
-    context_object_name = 'product'
+    template_name = "catalog/product_confirm_delete.html"
+    success_url = reverse_lazy("catalog:product_list")
+    context_object_name = "product"
