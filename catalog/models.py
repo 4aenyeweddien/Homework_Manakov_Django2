@@ -1,8 +1,19 @@
+from django.conf import settings
 from django.db import models
 
 
 class Product(models.Model):
     """Модель продукта для каталога."""
+
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,  # используем настроенную модель пользователя
+        on_delete=models.SET_NULL,  # если пользователь удален - владелец становится NULL
+        null=True,
+        blank=True,
+        verbose_name="Владелец",
+        help_text="Пользователь, создавший продукт"
+    )
+
     is_published = models.BooleanField(
         default=False,
         verbose_name="Опубликован",

@@ -3,7 +3,6 @@
 {% block content %}
 <div class="album py-5 bg-body-tertiary">
     <div class="container">
-        <!-- Кнопка создания продукта (только для авторизованных) -->
         {% if user.is_authenticated %}
         <div class="mb-4 text-end">
             <a href="{% url 'catalog:product_create' %}" class="btn btn-success">+ Добавить продукт</a>
@@ -18,6 +17,10 @@
                     <div class="card-body">
                         <p class="card-text"><strong>{{ product.name }}</strong></p>
 
+                        {% if product.owner %}
+                            <small class="text-muted">Владелец: {{ product.owner.email }}</small>
+                        {% endif %}
+
                         <p class="card-text">
                             <strong>Описание:</strong>
                             {% if product.description|length > 100 %}
@@ -29,34 +32,29 @@
 
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
-                                <!-- Кнопка просмотра -->
                                 <a class="btn btn-sm btn-outline-primary"
                                    href="{% url 'catalog:product_detail' product.pk %}">
                                     Посмотреть
                                 </a>
 
-                                <!-- Редактирование -->
-                                {% if user.is_authenticated %}
+                                {% if user.is_authenticated and product.owner == user %}
                                     <a class="btn btn-sm btn-outline-secondary"
                                        href="{% url 'catalog:product_update' product.pk %}">
                                         Редактировать
                                     </a>
                                 {% endif %}
 
-                                <!-- ✅ Удаление - только модераторы (по заданию) -->
-                                {% if perms.catalog.delete_product %}
+                                {% if user.is_authenticated and product.owner == user or perms.catalog.delete_product %}
                                     <a class="btn btn-sm btn-outline-danger"
                                        href="{% url 'catalog:product_delete' product.pk %}">
                                         Удалить
                                     </a>
                                 {% endif %}
 
-                                <!-- ✅ Отмена публикации - только модераторы (по заданию) -->
                                 {% if perms.catalog.can_unpublish_product %}
                                     <form method="post"
                                           action="{% url 'catalog:unpublish_product' product.pk %}"
-                                          style="display: inline;"
-                                          onsubmit="return confirm('Снять продукт с публикации?')">
+                                          style="display: inline;">
                                         {% csrf_token %}
                                         <button type="submit" class="btn btn-sm btn-outline-warning">
                                             Снять с публикации
