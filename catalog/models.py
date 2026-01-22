@@ -3,6 +3,11 @@ from django.db import models
 
 class Product(models.Model):
     """Модель продукта для каталога."""
+    is_published = models.BooleanField(
+        default=False,
+        verbose_name="Опубликован",
+        help_text="Отметьте для публикации продукта"
+    )
 
     name = models.CharField(
         max_length=100,
@@ -46,6 +51,9 @@ class Product(models.Model):
         verbose_name = "Продукт"
         verbose_name_plural = "Продукты"
         ordering = ["name", "category"]
+        permissions = [
+            ('can_unpublish_product', 'Can unpublish product'),
+        ]
 
     def __str__(self):
         return self.name

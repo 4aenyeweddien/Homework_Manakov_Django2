@@ -1,6 +1,5 @@
-from django import forms
 from django.core.exceptions import ValidationError
-from django.forms import BooleanField
+from django.forms import BooleanField, ModelForm
 
 from catalog.models import Product
 
@@ -17,7 +16,7 @@ class StyleFormMixin:
                 field.widget.attrs["class"] = "form-control"
 
 
-class ProductForm(StyleFormMixin, forms.ModelForm):
+class ProductForm(StyleFormMixin, ModelForm):
     """Форма для создания и редактирования продуктов."""
 
     class Meta:
@@ -76,3 +75,5 @@ class ProductForm(StyleFormMixin, forms.ModelForm):
         if price is not None and price < 0:
             raise ValidationError("Цена продукта не может быть отрицательной")
         return price
+
+class CatalogModeratorForm(StyleFormMixin, ModelForm):
