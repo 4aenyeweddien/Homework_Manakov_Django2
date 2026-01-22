@@ -75,5 +75,3 @@ class ProductForm(StyleFormMixin, ModelForm):
         if price is not None and price < 0:
             raise ValidationError("Цена продукта не может быть отрицательной")
         return price
-
-class CatalogModeratorForm(StyleFormMixin, ModelForm):
