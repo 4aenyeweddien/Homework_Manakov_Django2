@@ -1,8 +1,24 @@
+from django.conf import settings
 from django.db import models
 
 
 class Product(models.Model):
     """Модель продукта для каталога."""
+
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,  # используем настроенную модель пользователя
+        on_delete=models.SET_NULL,  # если пользователь удален - владелец становится NULL
+        null=True,
+        blank=True,
+        verbose_name="Владелец",
+        help_text="Пользователь, создавший продукт"
+    )
+
+    is_published = models.BooleanField(
+        default=False,
+        verbose_name="Опубликован",
+        help_text="Отметьте для публикации продукта"
+    )
 
     name = models.CharField(
         max_length=100,
@@ -46,6 +62,9 @@ class Product(models.Model):
         verbose_name = "Продукт"
         verbose_name_plural = "Продукты"
         ordering = ["name", "category"]
+        permissions = [
+            ('can_unpublish_product', 'Can unpublish product'),
+        ]
 
     def __str__(self):
         return self.name
