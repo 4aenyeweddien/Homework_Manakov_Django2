@@ -6,13 +6,8 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
-from django.views.generic import (
-    CreateView,
-    DeleteView,
-    DetailView,
-    ListView,
-    UpdateView,
-)
+from django.views.generic import (CreateView, DeleteView, DetailView, ListView, UpdateView,)
+from .services import get_products_by_category, get_category, get_products_from_cache
 
 from catalog.forms import ProductForm
 from catalog.models import Product
@@ -37,6 +32,9 @@ class ProductsListView(ListView):
     model = Product
     template_name = "catalog/product_list.html"
     context_object_name = "products"
+
+    def get_queryset(self):
+        return get_products_from_cache()
 
 
 class ProductDetailView(LoginRequiredMixin, DetailView):
@@ -116,3 +114,20 @@ class UnpublishProductView(LoginRequiredMixin, View):
         product.is_published = False
         product.save()
         return redirect('catalog:product_list')
+
+
+class ProductsByCategoryView(ListView):
+    """Представление для отображения продуктов в категории"""
+    template_name = 'catalog/products_by_category.html'
+    context_object_name = 'products'
+
+    def get_queryset(self):
+        category_id = self.kwargs.get('category_id')
+        return get_products_by_category(category_id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        category_id = self.kwargs.get('category_id')
+        context['category'] = get_category(category_id)
+        return context
+
